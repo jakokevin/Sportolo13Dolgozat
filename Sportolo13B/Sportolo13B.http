@@ -1,0 +1,6 @@
+@Sportolo13B_HostAddress = http://localhost:5068
+
+GET {{Sportolo13B_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
