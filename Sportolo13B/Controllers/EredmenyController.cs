@@ -166,6 +166,37 @@ namespace Sportolo13B.Controllers
         }
 
 
+        //6 id alapjan egy sportolo emaile és  neve
+
+        [HttpGet("sportolo/{id}")]
+        public object GetSportoloAdatok(int id)
+        {
+            var connection = new MySqlConnection(ConnectionString);
+            connection.Open();
+            string sql = @"SELECT name, email FROM sportolo WHERE id = @id;";
+
+            var cmd = new MySqlCommand(sql, connection);
+            cmd.Parameters.AddWithValue("@id", id);
+            var data = cmd.ExecuteReader();
+
+            if (data.Read())
+            {
+                var eredmeny = new
+                {
+                    Name = data.GetString("name"),
+                    Email = data.GetString("email")
+                };
+
+                connection.Close();
+                return eredmeny;
+            }
+
+            connection.Close();
+            return NotFound("nincs ilyen");
+        }
+
+
+
 
     }
 }
