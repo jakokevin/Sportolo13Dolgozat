@@ -111,6 +111,34 @@ namespace Sportolo13B.Controllers
                 result = addNewEredmenyDto
             };
         }
+        [HttpPut]
+        public object UpdateEredmeny([FromQuery] int id, UpdateEredmenyDto updateEredmenyDto)
+        {
+            var connection = new MySqlConnection(ConnectionString);
+
+            connection.Open();
+
+            string sql = @"UPDATE `eredmeny`
+                           SET `competition` = @competition,`description` = @description, `resultTime` = @resultTime, `updateTime` = @updateTime,`sportoloId` = @sportoloId
+                           WHERE `id` = @id;";
+
+            var cmd = new MySqlCommand(sql, connection);
+            cmd.Parameters.AddWithValue("@competition",updateEredmenyDto.Competition);
+            cmd.Parameters.AddWithValue("@description",updateEredmenyDto.Description);
+            cmd.Parameters.AddWithValue("@resultTime",updateEredmenyDto.ResultTime);
+            cmd.Parameters.AddWithValue("@updateTime",DateTime.Now);
+            cmd.Parameters.AddWithValue("@sportoloId",updateEredmenyDto.SportoloId);
+            cmd.Parameters.AddWithValue("@id",id);
+            cmd.ExecuteNonQuery();
+
+            connection.Close();
+
+            return new
+            {
+                message = "sikeres frissites",
+                result = updateEredmenyDto
+            };
+        }
 
 
 
