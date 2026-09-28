@@ -85,6 +85,32 @@ namespace Sportolo13B.Controllers
         }
 
 
+        //post uj eredmeny
+
+        [HttpPost]
+        public object AddNewEredmeny(
+            [FromBody] AddNewEredmenyDto addNewEredmenyDto){
+            var connection = new MySqlConnection(ConnectionString);
+            connection.Open();
+            string sql = @"INSERT INTO `eredmeny`
+                           (`competition`,`description`,`resultTime`,`updateTime`,`sportoloId`)
+                           VALUES (@competition,@description,@resultTime,@updateTime,
+                            @sportoloId)";
+
+            var cmd = new MySqlCommand(sql, connection);
+            cmd.Parameters.AddWithValue("@competition", addNewEredmenyDto.Competition);
+            cmd.Parameters.AddWithValue("@description",addNewEredmenyDto.Description);
+            cmd.Parameters.AddWithValue("@resultTime", DateTime.Now);
+            cmd.Parameters.AddWithValue("@updateTime",DateTime.Now);
+            cmd.Parameters.AddWithValue("@sportoloId",addNewEredmenyDto.SportoloId);
+            cmd.ExecuteNonQuery();
+            connection.Close();
+            return new
+            {
+                message = "sikeres felvétel",
+                result = addNewEredmenyDto
+            };
+        }
 
 
 
