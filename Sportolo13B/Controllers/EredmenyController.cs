@@ -196,6 +196,39 @@ namespace Sportolo13B.Controllers
         }
 
 
+        //7
+        [HttpGet("sportolo/{id}/eredmenyek")]
+        public List<object> GetSportoloEredmenyek(int id)
+        {
+            List<object> eredmenyek = new List<object>();
+
+            var connection = new MySqlConnection(ConnectionString);
+
+            connection.Open();
+
+            string sql = @"SELECT sportolo.name, eredmeny.competition, eredmeny.description FROM sportolo INNER JOIN eredmeny ON sportolo.id = eredmeny.sportoloId WHERE sportolo.id = @id;";
+
+            var cmd = new MySqlCommand(sql, connection);
+            cmd.Parameters.AddWithValue("@id", id);
+            var data = cmd.ExecuteReader();
+
+            while (data.Read())
+            {
+                var eredmeny = new
+                {
+                    Name = data.GetString("name"),
+                    Competition = data.GetString("competition"),
+                    Description = data.GetString("description")
+                };
+
+                eredmenyek.Add(eredmeny);
+            }
+            connection.Close();
+            return eredmenyek;
+        }
+
+
+
 
 
     }
