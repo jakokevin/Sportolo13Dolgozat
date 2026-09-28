@@ -229,7 +229,7 @@ namespace Sportolo13B.Controllers
 
 
 
-        //mennyi eredmeny van
+        //8 mennyi eredmeny van
         [HttpGet("darab")]
         public object GetEredmenyekSzama()
         {
@@ -249,6 +249,27 @@ namespace Sportolo13B.Controllers
         }
 
 
+
+        // 9 egy sportolonak hany eredmenye van
+
+        [HttpGet("sportolo/{id}/darab")]
+        public object GetSportoloEredmenyeinekSzama(int id)
+        {
+            var connection = new MySqlConnection(ConnectionString);
+            connection.Open();
+            string sql = @"SELECT COUNT(*) FROM eredmeny WHERE sportoloId = @id;";
+            var cmd = new MySqlCommand(sql, connection);
+            cmd.Parameters.AddWithValue("@id", id);
+
+            var darab = Convert.ToInt32(cmd.ExecuteScalar());
+
+            connection.Close();
+            return new
+            {
+                SportoloId = id,
+                Darab = darab
+            };
+        }
 
 
     }
