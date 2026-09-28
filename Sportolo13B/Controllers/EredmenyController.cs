@@ -229,6 +229,26 @@ namespace Sportolo13B.Controllers
 
 
 
+        //mennyi eredmeny van
+        [HttpGet("darab")]
+        public object GetEredmenyekSzama()
+        {
+            var connection = new MySqlConnection(ConnectionString);
+            connection.Open();
+            string sql = "SELECT COUNT(*) FROM eredmeny;";
+            var cmd = new MySqlCommand(sql, connection);
+
+            var darab = Convert.ToInt32(cmd.ExecuteScalar());
+
+            connection.Close();
+
+            return new
+            {
+                Darab = darab
+            };
+        }
+
+
 
 
     }
